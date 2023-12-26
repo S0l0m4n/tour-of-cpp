@@ -26,7 +26,3 @@ Five standard-library headers are:
 * `<string>`
 * `<iterator>`
 * `<list>`
-
-Ex 5
-----
-Refer to `05_read_name_age.cc`.
