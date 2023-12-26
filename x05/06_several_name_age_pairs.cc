@@ -15,32 +15,35 @@ using std::vector;
 class NameAgePairs {
 public:
     // Constructor
-    NameAgePairs(int max) : pairs(new vector<pair<string, int>>[max]), sz(max) {}
+    NameAgePairs(int max) : pairs {vector<pair<string, int>>} {}
+    // NOTE: Don't need to use `new` as `vector` class allocates memory
+
+    ~NameAgePairs() {delete pairs}
+    // Delete memory allocated by `pairs` vector
 
     void add_pair(pair<string, int>& na_pair) {
         pairs->push_back(na_pair);
     }
 
     std::string get_name(int i) {
-        if (i < sz)
+        if (i < pairs.size())
             return pairs[i].first;
         return "NULL";
     }
 
     int get_size() {
-        return sz;
+        return pairs.size();
     }
 
 private:
     vector<pair<string, int>>* pairs;
-    int sz;
 };
 
 // Overload the `>>` operator
-std::istream& operator>> (std::istream& input, NameAgePairs& na_pairs) {
+std::istream& operator>>(std::istream& input, NameAgePairs& na_pairs) {
     pair<string, int> na_pair;
-    input >> na_pair.first >> na_pair.second;
-    na_pairs.add_pair(na_pair);
+    if (input >> na_pair.first >> na_pair.second)
+        na_pairs.add_pair(na_pair);
     return input;
 }
 
@@ -48,7 +51,8 @@ int main()
 {
     NameAgePairs pairs(8);
 
-    std::cout << "Please enter several name and age pairs (hit `Enter` after each pair), e.g. 'John 44': ";
+    std::cout << "Please enter several name and age pairs (hit `Enter` after each pair), e.g. 'John 44': "
+              << std::endl;
 
     while (std::cin >> pairs) {
         // Do nothing
