@@ -8,25 +8,27 @@
 #include <utility>
 #include <vector>
 
-using std::cin; using std::cout; using std::endl;
-using std::istream;
 using std::string;
 using std::pair;
 using std::vector;
 
-class NameAgePairs
-{
+class NameAgePairs {
 public:
     // Constructor
     NameAgePairs(int max) : pairs(new vector<pair<string, int>>[max]), sz(max) {}
 
-    // Overload the `>>` operator
-    friend istream& operator>>(istream& input, NameAgePairs& obj)
-    {
-        pair<string, int> na_pair;
-        input >> na_pair.first >> na_pair.second;
-        obj.pairs.push_back(na_pair);
-        return input;
+    void add_pair(pair<string, int>& na_pair) {
+        pairs->push_back(na_pair);
+    }
+
+    std::string get_name(int i) {
+        if (i < sz)
+            return pairs[i].first;
+        return "NULL";
+    }
+
+    int get_size() {
+        return sz;
     }
 
 private:
@@ -34,18 +36,28 @@ private:
     int sz;
 };
 
+// Overload the `>>` operator
+std::istream& operator>> (std::istream& input, NameAgePairs& na_pairs) {
+    pair<string, int> na_pair;
+    input >> na_pair.first >> na_pair.second;
+    na_pairs.add_pair(na_pair);
+    return input;
+}
+
 int main()
 {
     NameAgePairs pairs(8);
 
-    cout << "Please enter several name and age pairs (hit `Enter` after each pair), e.g. 'John 44': ";
+    std::cout << "Please enter several name and age pairs (hit `Enter` after each pair), e.g. 'John 44': ";
 
-    while (cin >> pairs)
-    {
+    while (std::cin >> pairs) {
         // Do nothing
     }
 
     // Continue processing from here
+    for (auto i = 0; i < pairs.get_size(); i++) {
+        std::cout << pairs.get_name(i) << std::endl;
+    }
 
     return 0;
 }
