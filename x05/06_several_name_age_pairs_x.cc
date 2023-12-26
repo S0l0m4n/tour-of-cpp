@@ -15,9 +15,9 @@ using std::vector;
 class NameAgePairs {
 public:
     // Constructor
-    NameAgePairs(int max) : elems {new string[max]}, sz {max} {}
+    NameAgePairs(int max) : elems {new pair<string, int>[max]}, sz {max} {}
 
-    bool add_pair(string na_pair) {
+    bool add_pair(pair<string, int> na_pair) {
         if (count < sz) {
             elems[count] = na_pair;
             count++;
@@ -28,7 +28,7 @@ public:
 
     std::string get_name(int i) {
         if (i < count)
-            return elems[i];
+            return elems[i].first;
         return "NULL";
     }
 
@@ -37,15 +37,15 @@ public:
     }
 
 private:
-    string* elems;
+    pair<string, int>* elems;
     int sz;
     int count = 0;
 };
 
 // Overload the `>>` operator
 std::istream& operator>>(std::istream& input, NameAgePairs& na_pairs) {
-    string na_pair;
-    if (input >> na_pair)
+    pair<string, int> na_pair;
+    if (input >> na_pair.first >> na_pair.second)
         na_pairs.add_pair(na_pair);
     return input;
 }
